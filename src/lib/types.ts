@@ -13,10 +13,14 @@ export const CATEGORIES: Category[] = [
   'Furniture',
 ];
 
-export type SyncStatus = 'DRAFT' | 'PENDING_SYNC' | 'SYNCING' | 'SYNCED' | 'SYNC_ERROR';
+export type SyncStatus =
+  | 'DRAFT'
+  | 'PENDING_SYNC'
+  | 'SYNCING'
+  | 'SYNCED'
+  | 'SYNC_ERROR';
 
 export const SYNC_TAG = 'vku-sync-inspections';
-
 
 /**
  * A single facility inspection record.
@@ -25,16 +29,26 @@ export const SYNC_TAG = 'vku-sync-inspections';
  */
 export interface InspectionRecord {
   id: string;
+
   building: string;
   floor: string;
   room: string;
+
+  // GPS location
+  latitude?: number;
+  longitude?: number;
+
   category: Category | '';
   rating: number; // 1-5, 0 = not yet set
+
   notes: string;
+
   photo?: Blob;
   photoName?: string;
+
   createdAt: number;
   updatedAt: number;
+
   status: SyncStatus;
   retryCount: number;
   lastError?: string;
@@ -42,16 +56,26 @@ export interface InspectionRecord {
 
 export function createEmptyRecord(id: string): InspectionRecord {
   const now = Date.now();
+
   return {
     id,
+
     building: '',
     floor: '',
     room: '',
+
+    // Chưa lấy GPS
+    latitude: undefined,
+    longitude: undefined,
+
     category: '',
     rating: 0,
+
     notes: '',
+
     createdAt: now,
     updatedAt: now,
+
     status: 'DRAFT',
     retryCount: 0,
   };
